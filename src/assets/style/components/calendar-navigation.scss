@@ -1,0 +1,17 @@
+.calendar-navigation {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 0;
+}
+
+.calendar-navigation__container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 250px;
+}
+
+.calendar-navigation__text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
