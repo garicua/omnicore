@@ -15,7 +15,8 @@
   width: 100%;
 }
 
-.calendar-body__week {
+.calendar-body__week,
+.calendar-body__day {
   display: flex;
   flex: 1 1 0;
   justify-content: center;
@@ -35,6 +36,14 @@
   }
 }
 
+.calendar-body__day {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #aeb0b2;
+  }
+}
+
 .calendar-body__date {
   padding: 8px;
 }
@@ -50,3 +59,15 @@
     justify-content: flex-start;
   }
 }
+
+.calendar-body__body {
+  display: block;
+  padding: 12px;
+}
+
+.calendar-body__body-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

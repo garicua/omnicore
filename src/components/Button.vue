@@ -1,5 +1,5 @@
 <template>
-  <button type="button"
+  <button :type="typeBtn"
           class="button"
           :class="classes"
           :disabled="disabled"
@@ -13,6 +13,10 @@
 export default {
   name: "Button",
   props: {
+    typeBtn: {
+      type: String,
+      default: 'button',
+    },
     disabled: Boolean,
     text: String,
     // size

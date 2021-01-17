@@ -1,0 +1,49 @@
+.add-event {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  justify-content: center;
+  margin: auto;
+  width: 100%;
+  max-width: 300px;
+  min-height: 300px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,.9);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.add-event__overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .75);
+}
+
+.add-event__header {
+  min-height: 40px;
+  padding: 4px 0;
+  background-color: #6c757d;
+  line-height: 40px;
+  color: #fff;
+}
+
+.add-event__close {
+  position: absolute;
+  right: 4px;
+  top: -8px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.add-event__body {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}

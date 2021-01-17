@@ -10,9 +10,16 @@
     <ul v-for="(week, index) in calendar" :key="index" class="calendar-body__week">
       <li v-for="(day, index) in week" :key="index"
           :style="{'background-color': day.current}"
-          class="calendar-body__week"
+          class="calendar-body__day"
+          v-on="$listeners"
       >
-        <span class="calendar-body__date">{{ day.index }}</span>
+        <span class="calendar-body__body">
+          <span class="calendar-body__body-item">{{ userEvent }}</span>
+          <span class="calendar-body__body-item">{{ userParticipant }}</span>
+          <span class="calendar-body__body-item">{{ userDescription }}</span>
+        </span>
+        <span class="calendar-body__date" ref="${{day.index}}">{{ day.index }}</span>
+
       </li>
     </ul>
   </div>
@@ -24,6 +31,9 @@ export default {
   props: {
     daysName: Array,
     calendar: Array,
+    userEvent: String,
+    userParticipant: String,
+    userDescription: String,
   }
 }
 </script>

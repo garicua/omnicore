@@ -14,7 +14,28 @@
       <Button secondary small @click="resetMonth" :text="'Сегодня'"/>
     </CalendarNavigation>
 
-    <CalendarBody :days-name="daysName" :calendar="calendar()"/>
+    <CalendarBody :days-name="daysName"
+                  :calendar="calendar()"
+                  @click="toggleEventModal($event)"
+    />
+    <transition name="fade">
+      <AddEvent v-if="isOpenEventModal" @click="toggleEventModal">
+        <form @submit.prevent="submitHandler">
+          <InputText :placeholder="'Событие'"
+                      v-model="userEvent"
+          />
+          <InputText :placeholder="'Учасники'"
+                      v-model="userParticipant"
+          />
+          <label for="userDescription"></label>
+          <textarea v-model="userDescription"
+                    id="userDescription"
+                    placeholder="'Введите описания события'"
+                    class="textarea"/>
+          <Button secondary small :text="'Готово'" :type-btn="'submit'"/>
+        </form>
+      </AddEvent>
+    </transition>
   </div>
 </template>
 
@@ -24,6 +45,8 @@ import CalendarBody from '@/components/CalendarBody';
 import CalendarNavigation from '@/components/CalendarNavigation';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import AddEvent from '@/components/AddEvent';
+import InputText from '@/components/InputText';
 
 export default {
   name: 'Calendar',
@@ -35,6 +58,11 @@ export default {
       data: new Date(),
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      userEvent: '',
+      userParticipant: '',
+      userDescription: '',
+      isOpenEventModal: false,
+      dayId: null,
     };
   },
   components: {
@@ -42,6 +70,8 @@ export default {
     CalendarNavigation,
     Button,
     Header,
+    AddEvent,
+    InputText,
   },
   methods: {
     decreaseMonth() {
@@ -105,6 +135,23 @@ export default {
         this.daysName = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
       }
     },
+    toggleEventModal(event){
+      this.isOpenEventModal = !this.isOpenEventModal;
+      if(event){
+        this.dayId = event.path[0].innerText
+      }
+
+    },
+    submitHandler() {
+      const task = {
+        id: `${ this.dayId }.${ this.month + 1 }.${this.year}`,
+        userEvent: this.userEvent,
+        userParticipant: this.userParticipant,
+        userDescription: this.userDescription,
+      }
+      this.isOpenEventModal = false;
+      console.log(task);
+    }
   },
   created() {
     window.addEventListener('resize', this.updateWidth);
@@ -115,3 +162,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" >
+  .textarea {
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 16px 8px;
+    margin-bottom: 12px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0,0,0,.9);
+  }
+</style>
+
