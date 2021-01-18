@@ -62,7 +62,18 @@
 
 .calendar-body__body {
   display: block;
-  padding: 12px;
+
+  @media screen and (min-width: 1024px) {
+    padding: 12px;
+  }
+}
+
+.calendar-body__body-item {
+  display: none;
+
+  @media screen and (min-width: 1024px) {
+    display: block;
+  }
 }
 
 .calendar-body__body-item {

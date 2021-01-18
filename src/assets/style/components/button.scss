@@ -8,6 +8,10 @@
   font-size: 14px;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0,0,0,.4);
+
+  &:hover {
+    opacity: .8;
+  }
 }
 
 .button--primary {

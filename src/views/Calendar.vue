@@ -2,8 +2,7 @@
   <div class="container">
     <Header>
       <div>
-        <Button primary :text="'Добавить'"/>
-        <Button primary :text="'Обновить'"/>
+        <Button primary :text="'Обновить'"  @click="resetMonth"/>
       </div>
     </Header>
 
@@ -65,6 +64,7 @@ export default {
       userDescription: '',
       isOpenEventModal: false,
       dayId: null,
+      newUserEvent: {},
       allUserEvents: [
         {
           userDescription: "last day of January",
@@ -154,14 +154,19 @@ export default {
       this.dayId = `${ this.dayId }.${ this.month + 1 }.${this.year}`;
     },
     submitHandler() {
-      const userEvent = {
+     this.newUserEvent = {
         userEvent: this.userEvent,
         userParticipant: this.userParticipant,
         userDescription: this.userDescription,
       }
-      this.allUserEvents.push(userEvent)
+      this.allUserEvents.push(this.newUserEvent)
       console.log(this.allUserEvents);
+      this.saveAllUserEvents();
       this.isOpenEventModal = false;
+    },
+    saveAllUserEvents() {
+      const parsed = JSON.stringify(this.allUserEvents);
+      localStorage.setItem('allUserEvents', parsed);
     }
   },
   created() {
@@ -170,6 +175,15 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.updateWidth);
+  },
+  mounted() {
+    if (localStorage.getItem('allUserEvents')) {
+      try {
+        this.allUserEvents = JSON.parse(localStorage.getItem('allUserEvents'));
+      } catch(e) {
+        localStorage.removeItem('allUserEvents');
+      }
+    }
   },
 };
 </script>
