@@ -18,8 +18,10 @@
                   :calendar="calendar()"
                   @click="toggleEventModal($event)"
     />
+<!--    v-for="(userEvent, index) in allUserEvents" :key="index"-->
+<!--    :user-description="userEvent.userDescription"-->
     <transition name="fade">
-      <AddEvent v-if="isOpenEventModal" @click="toggleEventModal">
+      <AddEvent v-if="isOpenEventModal" :data="dayId" @click="toggleEventModal">
         <form @submit.prevent="submitHandler">
           <InputText :placeholder="'Событие'"
                       v-model="userEvent"
@@ -63,6 +65,13 @@ export default {
       userDescription: '',
       isOpenEventModal: false,
       dayId: null,
+      allUserEvents: [
+        {
+          userDescription: "last day of January",
+          userEvent: "GYM day",
+          userParticipant: "Alex",
+        }
+      ],
     };
   },
   components: {
@@ -108,10 +117,12 @@ export default {
           }
         } else {
           week++;
-
           days[week] = [];
           const a = { index: i };
           days[week].push(a);
+          if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
+            a.current = '#c3c5dd';
+          }
         }
       }
 
@@ -138,19 +149,19 @@ export default {
     toggleEventModal(event){
       this.isOpenEventModal = !this.isOpenEventModal;
       if(event){
-        this.dayId = event.path[0].innerText
+        this.dayId = event.currentTarget.querySelector('.calendar-body__date').innerHTML
       }
-
+      this.dayId = `${ this.dayId }.${ this.month + 1 }.${this.year}`;
     },
     submitHandler() {
-      const task = {
-        id: `${ this.dayId }.${ this.month + 1 }.${this.year}`,
+      const userEvent = {
         userEvent: this.userEvent,
         userParticipant: this.userParticipant,
         userDescription: this.userDescription,
       }
+      this.allUserEvents.push(userEvent)
+      console.log(this.allUserEvents);
       this.isOpenEventModal = false;
-      console.log(task);
     }
   },
   created() {

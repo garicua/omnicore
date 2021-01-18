@@ -8,7 +8,7 @@
       </li>
     </ul>
     <ul v-for="(week, index) in calendar" :key="index" class="calendar-body__week">
-      <li v-for="(day, index) in week" :key="index"
+      <li v-for="(day, ind) in week" :key="ind"
           :style="{'background-color': day.current}"
           class="calendar-body__day"
           v-on="$listeners"
