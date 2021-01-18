@@ -15,18 +15,20 @@
 
     <CalendarBody :days-name="daysName"
                   :calendar="calendar()"
+                  :posts="posts"
                   @click="toggleEventModal($event)"
     />
-<!--    v-for="(userEvent, index) in allUserEvents" :key="index"-->
-<!--    :user-description="userEvent.userDescription"-->
     <transition name="fade">
-      <AddEvent v-if="isOpenEventModal" :data="dayId" @click="toggleEventModal">
-        <form @submit.prevent="submitHandler">
+      <AddEvent v-if="isOpenEventModal"
+                :data="dayId"
+                @click="toggleEventModal($event)"
+      >
+        <form @submit.prevent="submitHandler" ref="form">
           <InputText :placeholder="'Событие'"
-                      v-model="userEvent"
+                     v-model="userEvent"
           />
           <InputText :placeholder="'Учасники'"
-                      v-model="userParticipant"
+                     v-model="userParticipant"
           />
           <label for="userDescription"></label>
           <textarea v-model="userDescription"
@@ -34,6 +36,7 @@
                     placeholder="'Введите описания события'"
                     class="textarea"/>
           <Button secondary small :text="'Готово'" :type-btn="'submit'"/>
+          <Button secondary small ml :text="'Удалить'" @click="clearUserPost"/>
         </form>
       </AddEvent>
     </transition>
@@ -41,7 +44,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import CalendarBody from '@/components/CalendarBody';
 import CalendarNavigation from '@/components/CalendarNavigation';
 import Button from '@/components/Button';
@@ -64,14 +66,10 @@ export default {
       userDescription: '',
       isOpenEventModal: false,
       dayId: null,
-      newUserEvent: {},
-      allUserEvents: [
-        {
-          userDescription: "last day of January",
-          userEvent: "GYM day",
-          userParticipant: "Alex",
-        }
-      ],
+      posts: {
+        '31-1-2021': {userDescription: "last day of January", userEvent: "GYM day", userParticipant: "Alex",},
+        '7-1-2021': {userDescription: "family meetup", userEvent: "Christmas day", userParticipant: "all",}
+      },
     };
   },
   components: {
@@ -110,7 +108,7 @@ export default {
       const lastMonthDay = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= lastMonthDay; i++) {
         if (new Date(this.year, this.month, i).getDay() !== 1) {
-          const a = { index: i };
+          const a = { index: i, year: this.year, month: this.month + 1 };
           days[week].push(a);
           if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
             a.current = '#c3c5dd';
@@ -118,14 +116,13 @@ export default {
         } else {
           week++;
           days[week] = [];
-          const a = { index: i };
+          const a = { index: i, year: this.year, month: this.month + 1};
           days[week].push(a);
           if (i === new Date().getDate() && this.year === new Date().getFullYear() && this.month === new Date().getMonth()) {
             a.current = '#c3c5dd';
           }
         }
       }
-
       if (days[0].length > 0) {
         for (let i = days[0].length; i < 7; i++) {
           days[0].unshift('');
@@ -149,24 +146,22 @@ export default {
     toggleEventModal(event){
       this.isOpenEventModal = !this.isOpenEventModal;
       if(event){
-        this.dayId = event.currentTarget.querySelector('.calendar-body__date').innerHTML
+        this.dayId = event
       }
-      this.dayId = `${ this.dayId }.${ this.month + 1 }.${this.year}`;
     },
     submitHandler() {
-     this.newUserEvent = {
+      this.posts[this.dayId] = {
         userEvent: this.userEvent,
         userParticipant: this.userParticipant,
         userDescription: this.userDescription,
       }
-      this.allUserEvents.push(this.newUserEvent)
-      console.log(this.allUserEvents);
-      this.saveAllUserEvents();
       this.isOpenEventModal = false;
+      this.$refs.form.reset()
+      console.log(this.posts);
     },
-    saveAllUserEvents() {
-      const parsed = JSON.stringify(this.allUserEvents);
-      localStorage.setItem('allUserEvents', parsed);
+    clearUserPost(){
+      this.posts[this.dayId] = null;
+      this.isOpenEventModal = false;
     }
   },
   created() {
@@ -175,15 +170,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.updateWidth);
-  },
-  mounted() {
-    if (localStorage.getItem('allUserEvents')) {
-      try {
-        this.allUserEvents = JSON.parse(localStorage.getItem('allUserEvents'));
-      } catch(e) {
-        localStorage.removeItem('allUserEvents');
-      }
-    }
   },
 };
 </script>
@@ -201,4 +187,3 @@ export default {
     box-shadow: 0 4px 8px rgba(0,0,0,.9);
   }
 </style>
-

@@ -1,18 +1,31 @@
 .calendar-body {
   position: relative;
-  max-width: 1200px;
+  max-width: 1024px;
   margin: 0 auto;
   border-bottom: 2px solid #6c757d;
 }
 
+.calendar-body__text {
+  padding: 16px 0;
+  text-align: center;
+
+  @media screen and (min-width: 568px) {
+    display: none;
+  }
+}
+
 .calendar-body__days {
   position: absolute;
-  top: 0;
+  top: 60px;
   display: flex;
   flex: 1 1 0;
   padding: 0;
   margin: 0;
   width: 100%;
+
+  @media screen and (min-width: 568px) {
+    top: 0;
+  }
 }
 
 .calendar-body__week,
@@ -21,15 +34,16 @@
   flex: 1 1 0;
   justify-content: center;
   align-items: center;
-  min-height: 100px;
+  min-height: 70px;
   border: 1px solid #6c757d;
   border-bottom: none;
   list-style-type:  none;
 
- @media screen and (min-width: 1024px) {
+ @media screen and (min-width: 568px) {
    justify-content: flex-end;
    align-items: flex-start;
-  }
+   min-height: 100px;
+ }
 
   &:empty {
     display: none;
@@ -44,8 +58,16 @@
   }
 }
 
+.calendar-body__day-colored {
+  background-color: #007bff;
+
+  &:hover {
+    background-color: #498fdb;
+  }
+}
 .calendar-body__date {
-  padding: 8px;
+  position: absolute;
+  padding: 4px;
 }
 
 .calendar-body__list {
@@ -63,22 +85,41 @@
 .calendar-body__body {
   display: block;
 
+  @media screen and (min-width: 568px) {
+    padding: 30px 4px 0 4px;
+  }
   @media screen and (min-width: 1024px) {
-    padding: 12px;
+    padding: 24px 4px 0 4px;
   }
 }
 
 .calendar-body__body-item {
   display: none;
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 568px) {
     display: block;
+    font-size: 12px;
+    width: 68px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-}
 
-.calendar-body__body-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @media screen and (min-width: 768px) {
+    display: block;
+    font-size: 12px;
+    width: 96px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding-bottom: 8px;
+    width: 130px;
+    font-size: 16px;
+
+    &:empty {
+      pointer-events: none;
+    }
+  }
 }
 

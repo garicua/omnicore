@@ -22,6 +22,7 @@ export default {
     // size
     long: Boolean,
     small: Boolean,
+    ml: Boolean,
     // color
     primary: Boolean,
     secondary: Boolean,
@@ -33,6 +34,7 @@ export default {
         'button--small': this.small,
         'button--primary': this.primary,
         'button--secondary': this.secondary,
+        'button--ml': this.ml,
       };
     },
   },

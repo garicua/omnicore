@@ -4,6 +4,7 @@
            type="text"
            :placeholder="placeholder"
            @input="input"
+           required
     />
   </label>
 </template>
@@ -13,6 +14,7 @@
     name: "InputText",
     props: {
       placeholder: String,
+      value: String,
     },
     methods: {
       input(event) {
